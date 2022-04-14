@@ -5,6 +5,7 @@ import com.wardenfar.mediscreen.patient.model.AddPatientModel;
 import com.wardenfar.mediscreen.patient.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,10 @@ public class PatientService {
 
         Patient saved = this.patientRepo.save(patient);
         return saved.getId();
+    }
+
+    public List<Patient> findAll() {
+        return this.patientRepo.findAll();
     }
 
     public Optional<Patient> findById(Long id) {

@@ -5,38 +5,37 @@ import com.wardenfar.mediscreen.patient.error.NotFoundException;
 import com.wardenfar.mediscreen.patient.model.AddPatientModel;
 import com.wardenfar.mediscreen.patient.model.AddRecordResponse;
 import com.wardenfar.mediscreen.patient.service.PatientService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("/")
-public class PatientController {
+@RestController
+@RequestMapping("/api/v1")
+public class ApiPatientController {
 
     final PatientService patientService;
 
-    public PatientController(PatientService patientService) {
+    public ApiPatientController(PatientService patientService) {
         this.patientService = patientService;
     }
 
-    @GetMapping("/view/{id}")
-    public String add(@PathVariable Long id, Model model) {
+    @PostMapping("/patient")
+    public AddRecordResponse add(@RequestBody AddPatientModel model) {
+        try {
+            Long id = patientService.addPatient(model);
+            return new AddRecordResponse(true, id);
+        } catch (Exception e) {
+            return new AddRecordResponse(false, null);
+        }
+    }
+
+    @GetMapping("/patient")
+    public Patient fetch(@RequestParam Long id) {
         Optional<Patient> patient = patientService.findById(id);
         if (patient.isEmpty()) {
             throw new NotFoundException("Patient not found");
         } else {
-            model.addAttribute("patient", patient.get());
-            return "view";
+            return patient.get();
         }
-    }
-
-    @GetMapping("/list")
-    public String list(Model model) {
-        List<Patient> patients = patientService.findAll();
-        model.addAttribute("patients", patients);
-        return "list";
     }
 }

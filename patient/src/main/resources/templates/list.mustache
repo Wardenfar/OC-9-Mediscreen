@@ -1,0 +1,22 @@
+{{> base_header }}
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#patients}}
+        <tr>
+            <td>{{ id }}</td>
+            <td>{{ nom }}</td>
+            <td>{{ prenom }}</td>
+        </tr>
+    {{/patients}}
+    </tbody>
+</table>
+
+{{> base_footer }}
