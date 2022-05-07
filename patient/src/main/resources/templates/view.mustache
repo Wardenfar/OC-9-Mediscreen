@@ -1,8 +1,35 @@
 {{> base_header }}
 
 {{#patient}}
-    <div>Nom: {{ nom }}</div>
-    <div>Prénom: {{ prenom }}</div>
+    <h1>Patient : {{ nom }} {{ prenom }}</h1>
+
+    <div class="mb-3">
+        <label for="prenom" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="prenom" value="{{ nom }}">
+    </div>
+    <div class="mb-3">
+        <label for="prenom" class="form-label">Prénom</label>
+        <input type="text" class="form-control" id="prenom" value="{{ prenom }}">
+    </div>
+    <div class="mb-3">
+        <label for="genre" class="form-label">Genre</label>
+        <select class="form-control" id=genre">
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="date" class="form-label">Date de naissance</label>
+        <input type="date" class="form-control" id="date" value="{{ ddn }}">
+    </div>
+    <div class="mb-3">
+        <label for="adresse" class="form-label">Adresse</label>
+        <input type="text" class="form-control" id="adresse" value="{{ adresse }}">
+    </div>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Téléphone</label>
+        <input type="text" class="form-control" id="phone" value="{{ phone }}">
+    </div>
 {{/patient}}
 
 {{> base_footer }}

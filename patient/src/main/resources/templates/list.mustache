@@ -1,11 +1,14 @@
 {{> base_header }}
 
-<table>
+<h1>Liste des patients</h1>
+
+<table class="table">
     <thead>
     <tr>
         <th>Id</th>
         <th>Nom</th>
         <th>Prénom</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +17,9 @@
             <td>{{ id }}</td>
             <td>{{ nom }}</td>
             <td>{{ prenom }}</td>
+            <td>
+                <a href="/view/{{ id }}">Voir</a>
+            </td>
         </tr>
     {{/patients}}
     </tbody>
