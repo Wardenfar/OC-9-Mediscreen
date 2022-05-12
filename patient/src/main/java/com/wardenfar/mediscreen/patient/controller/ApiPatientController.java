@@ -2,7 +2,7 @@ package com.wardenfar.mediscreen.patient.controller;
 
 import com.wardenfar.mediscreen.patient.entity.Patient;
 import com.wardenfar.mediscreen.patient.error.NotFoundException;
-import com.wardenfar.mediscreen.patient.model.AddPatientModel;
+import com.wardenfar.mediscreen.patient.model.PatientModel;
 import com.wardenfar.mediscreen.patient.model.AddRecordResponse;
 import com.wardenfar.mediscreen.patient.service.PatientService;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class ApiPatientController {
     }
 
     @PostMapping("/patient")
-    public AddRecordResponse add(@RequestBody AddPatientModel model) {
+    public AddRecordResponse add(@RequestBody PatientModel model) {
         try {
             Long id = patientService.addPatient(model);
             return new AddRecordResponse(true, id);

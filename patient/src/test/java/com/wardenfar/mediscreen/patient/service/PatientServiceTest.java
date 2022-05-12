@@ -3,7 +3,7 @@ package com.wardenfar.mediscreen.patient.service;
 import com.wardenfar.mediscreen.patient.PatientApplication;
 import com.wardenfar.mediscreen.patient.entity.Patient;
 import com.wardenfar.mediscreen.patient.error.NotFoundException;
-import com.wardenfar.mediscreen.patient.model.AddPatientModel;
+import com.wardenfar.mediscreen.patient.model.PatientModel;
 import com.wardenfar.mediscreen.patient.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +39,10 @@ class PatientServiceTest {
     public void add_one_patient() throws Exception {
         assertEquals(0, patientRepository.count());
 
-        AddPatientModel patient = AddPatientModel.builder()
+        PatientModel patient = PatientModel.builder()
                 .address("50 rue de paris")
                 .dob(LocalDate.of(2005, 10, 30))
-                .sex(Patient.Genre.M)
+                .sex(Patient.Sex.M)
                 .family("Smith")
                 .given("John")
                 .phone("0503010506")
@@ -52,7 +52,7 @@ class PatientServiceTest {
         assertEquals(1, patientRepository.count());
 
         Patient patientInDB = this.patientRepository.findById(id).get();
-        assertEquals("Smith", patientInDB.getNom());
+        assertEquals("Smith", patientInDB.getFamily());
 
         this.mvc.perform(get("/api/v1/patient").param("id", String.valueOf(id)))
                 .andExpect(status().isOk())

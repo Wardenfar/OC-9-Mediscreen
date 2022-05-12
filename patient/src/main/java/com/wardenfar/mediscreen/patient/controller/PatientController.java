@@ -2,13 +2,14 @@ package com.wardenfar.mediscreen.patient.controller;
 
 import com.wardenfar.mediscreen.patient.entity.Patient;
 import com.wardenfar.mediscreen.patient.error.NotFoundException;
-import com.wardenfar.mediscreen.patient.model.AddPatientModel;
-import com.wardenfar.mediscreen.patient.model.AddRecordResponse;
+import com.wardenfar.mediscreen.patient.model.PatientModel;
 import com.wardenfar.mediscreen.patient.service.PatientService;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,12 @@ public class PatientController {
             model.addAttribute("patient", patient.get());
             return "view";
         }
+    }
+
+    @PostMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String update(@PathVariable Long id, @Valid PatientModel patientModel) {
+        patientService.updatePatient(id, patientModel);
+        return "redirect:/view/" + id;
     }
 
     @GetMapping("/list")
