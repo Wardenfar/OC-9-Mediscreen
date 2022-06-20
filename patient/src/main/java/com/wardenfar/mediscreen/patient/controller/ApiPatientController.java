@@ -5,12 +5,13 @@ import com.wardenfar.mediscreen.patient.error.NotFoundException;
 import com.wardenfar.mediscreen.patient.model.PatientModel;
 import com.wardenfar.mediscreen.patient.model.AddRecordResponse;
 import com.wardenfar.mediscreen.patient.service.PatientService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/patient")
 public class ApiPatientController {
 
     final PatientService patientService;
@@ -19,8 +20,8 @@ public class ApiPatientController {
         this.patientService = patientService;
     }
 
-    @PostMapping("/patient")
-    public AddRecordResponse add(@RequestBody PatientModel model) {
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public AddRecordResponse add(PatientModel model) {
         try {
             Long id = patientService.addPatient(model);
             return new AddRecordResponse(true, id);
@@ -29,7 +30,7 @@ public class ApiPatientController {
         }
     }
 
-    @GetMapping("/patient")
+    @GetMapping("/fetch")
     public Patient fetch(@RequestParam Long id) {
         Optional<Patient> patient = patientService.findById(id);
         if (patient.isEmpty()) {
