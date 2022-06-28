@@ -3,9 +3,9 @@ package com.wardenfar.mediscreen.patient.controller;
 import com.wardenfar.mediscreen.patient.entity.Patient;
 import com.wardenfar.mediscreen.patient.error.NotFoundException;
 import com.wardenfar.mediscreen.patient.model.PatientModel;
-import com.wardenfar.mediscreen.patient.model.AddRecordResponse;
 import com.wardenfar.mediscreen.patient.service.PatientService;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,22 +21,22 @@ public class ApiPatientController {
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public AddRecordResponse add(PatientModel model) {
+    public ResponseEntity<Long> add(PatientModel model) {
         try {
             Long id = patientService.addPatient(model);
-            return new AddRecordResponse(true, id);
+            return ResponseEntity.ok(id);
         } catch (Exception e) {
-            return new AddRecordResponse(false, null);
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/fetch")
-    public Patient fetch(@RequestParam Long id) {
+    public ResponseEntity<Patient> fetch(@RequestParam Long id) {
         Optional<Patient> patient = patientService.findById(id);
-        if (patient.isEmpty()) {
-            throw new NotFoundException("Patient not found");
+        if (patient.isPresent()) {
+            return ResponseEntity.ok(patient.get());
         } else {
-            return patient.get();
+            return ResponseEntity.notFound().build();
         }
     }
 }

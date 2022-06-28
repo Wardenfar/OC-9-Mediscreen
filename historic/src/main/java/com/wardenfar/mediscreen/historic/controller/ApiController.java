@@ -1,14 +1,13 @@
 package com.wardenfar.mediscreen.historic.controller;
 
 import com.wardenfar.mediscreen.historic.document.Historic;
-import com.wardenfar.mediscreen.historic.error.NotFoundException;
 import com.wardenfar.mediscreen.historic.model.AddHistoricModel;
 import com.wardenfar.mediscreen.historic.service.HistoricService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,23 +18,24 @@ public class ApiController {
     HistoricService historicService;
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String add(AddHistoricModel model) {
+    public ResponseEntity<String> add(AddHistoricModel model) {
         try {
             Historic historic = model.convertToDocument();
             String id = historicService.addHistoric(historic);
-            return "success : " + id;
+            return ResponseEntity.ok(id);
         } catch (Exception e) {
-            return "fail : " + e.getMessage();
+            System.err.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/fetch/{id}")
-    public Historic fetch(@PathVariable String id) {
+    public ResponseEntity<Historic> fetch(@PathVariable String id) {
         Optional<Historic> historic = historicService.findById(id);
-        if (historic.isEmpty()) {
-            throw new NotFoundException("Historic not found");
+        if (historic.isPresent()) {
+            return ResponseEntity.ok(historic.get());
         } else {
-            return historic.get();
+            return ResponseEntity.notFound().build();
         }
     }
 }
