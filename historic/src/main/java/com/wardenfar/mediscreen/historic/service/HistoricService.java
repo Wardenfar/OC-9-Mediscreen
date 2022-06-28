@@ -19,6 +19,10 @@ public class HistoricService {
         return inserted.getId();
     }
 
+    public void update(Historic historic) {
+        this.historicRepo.save(historic);
+    }
+
     public Optional<Historic> findById(String id) {
         return this.historicRepo.findById(id);
     }

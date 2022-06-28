@@ -1,0 +1,32 @@
+{{> base_header }}
+
+<h1>Liste des historiques</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Patient ID</th>
+        <th>Historique</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#historics}}
+        <tr>
+            <td>{{ id }}</td>
+            <td>
+                <a href="localhost:8081/view/{{ patientId }}">
+                    {{ patientId }}
+                </a>
+            </td>
+            <td>{{ content }}</td>
+            <td>
+                <a href="/view/{{ id }}">Voir</a>
+            </td>
+        </tr>
+    {{/historics}}
+    </tbody>
+</table>
+
+{{> base_footer }}
