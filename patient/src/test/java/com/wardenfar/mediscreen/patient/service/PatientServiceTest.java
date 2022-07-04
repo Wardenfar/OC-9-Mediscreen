@@ -1,70 +1,59 @@
 package com.wardenfar.mediscreen.patient.service;
 
-import com.wardenfar.mediscreen.patient.PatientApplication;
 import com.wardenfar.mediscreen.patient.entity.Patient;
-import com.wardenfar.mediscreen.patient.error.NotFoundException;
 import com.wardenfar.mediscreen.patient.model.PatientModel;
-import com.wardenfar.mediscreen.patient.repository.PatientRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = PatientApplication.class)
-@AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:integration_test.properties")
+@SpringBootTest
+@Testcontainers
 class PatientServiceTest {
+
+    @Container
+    static MySQLContainer mysql = new MySQLContainer("mysql");
 
     @Autowired
     PatientService patientService;
 
-    @Autowired
-    PatientRepository patientRepository;
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Test
-    public void add_one_patient() throws Exception {
-        assertEquals(0, patientRepository.count());
-
-        PatientModel patient = PatientModel.builder()
-                .address("50 rue de paris")
-                .dob(LocalDate.of(2005, 10, 30))
-                .sex(Patient.Sex.M)
-                .family("Smith")
-                .given("John")
-                .phone("0503010506")
-                .build();
-        Long id = this.patientService.addPatient(patient);
-
-        assertEquals(1, patientRepository.count());
-
-        Patient patientInDB = this.patientRepository.findById(id).get();
-        assertEquals("Smith", patientInDB.getFamily());
-
-        this.mvc.perform(get("/api/v1/patient").param("id", String.valueOf(id)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("prenom", is("John")));
+    @DynamicPropertySource
+    static void applicationProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysql::getJdbcUrl);
+        registry.add("spring.datasource.username", mysql::getUsername);
+        registry.add("spring.datasource.password", mysql::getPassword);
     }
 
     @Test
-    public void get_non_existent_patient() throws Exception {
-        // The first id given by MYSQL is 1
-        // So the patient with id=0 never exist
-        this.mvc.perform(get("/api/v1/patient").param("id", String.valueOf(0)))
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException));
+    void insert() {
+        assert this.patientService.findAll().size() == 0;
+
+        PatientModel patient = PatientModel.builder()
+                .given("John")
+                .family("Doe")
+                .dob(LocalDate.now())
+                .address("5 rue XX")
+                .phone("0102030405")
+                .sex(Patient.Sex.M)
+                .build();
+
+        Long id = this.patientService.addPatient(patient);
+        assert this.patientService.findAll().size() == 1;
+
+        Patient findById = this.patientService.findById(id).get();
+        assert findById.getGiven().equals("John");
+        assert findById.getSex().equals(Patient.Sex.M);
+    }
+
+    @AfterEach
+    void afterEach() {
+        this.patientService.deleteAll();
     }
 }

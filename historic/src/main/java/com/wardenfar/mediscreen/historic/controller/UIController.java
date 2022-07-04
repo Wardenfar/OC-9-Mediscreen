@@ -4,7 +4,6 @@ import com.wardenfar.mediscreen.historic.document.Historic;
 import com.wardenfar.mediscreen.historic.model.HistoricModel;
 import com.wardenfar.mediscreen.historic.service.HistoricService;
 import com.wardenfar.mediscreen.historic.error.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +42,7 @@ public class UIController {
         Optional<Historic> historicOptional = historicService.findById(id);
         if (historicOptional.isPresent()) {
             Historic historic = historicOptional.get();
-            historic.setContent(historicModel.getContent());
+            historic.setNotes(historicModel.getNotes());
             historicService.update(historic);
             return "redirect:/view/" + id;
         } else {

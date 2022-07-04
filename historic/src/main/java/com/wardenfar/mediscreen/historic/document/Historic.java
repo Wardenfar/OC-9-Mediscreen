@@ -15,5 +15,5 @@ public class Historic {
     private String id;
 
     private Integer patientId;
-    private String content;
+    private String notes;
 }

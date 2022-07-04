@@ -38,4 +38,8 @@ public class PatientService {
     public Optional<Patient> findById(Long id) {
         return this.patientRepo.findById(id);
     }
+
+    public void deleteAll() {
+        this.patientRepo.deleteAll();
+    }
 }

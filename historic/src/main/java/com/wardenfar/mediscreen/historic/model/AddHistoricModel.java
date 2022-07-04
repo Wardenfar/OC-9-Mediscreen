@@ -11,7 +11,7 @@ public class AddHistoricModel {
     public Historic convertToDocument() {
         Historic doc = new Historic();
         doc.setPatientId(patId);
-        doc.setContent(e);
+        doc.setNotes(e);
         return doc;
     }
 }

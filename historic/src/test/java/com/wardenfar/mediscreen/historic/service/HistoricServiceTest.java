@@ -35,18 +35,18 @@ class HistoricServiceTest {
     void insert() {
         assert this.historicService.findAll().size() == 0;
         Historic historic = new Historic();
-        historic.setContent("content");
+        historic.setNotes("notes");
         historic.setPatientId(50);
         String id = this.historicService.addHistoric(historic);
         assert this.historicService.findAll().size() == 1;
 
         Historic findById = this.historicService.findById(id).get();
-        assert findById.getContent().equals("content");
+        assert findById.getNotes().equals("notes");
         assert findById.getPatientId() == 50;
 
         Historic findByPatientId = this.historicService.findByPatientId(50).get();
         assert findByPatientId.getId().equals(id);
-        assert findByPatientId.getContent().equals("content");
+        assert findByPatientId.getNotes().equals("notes");
     }
 
     @AfterEach
