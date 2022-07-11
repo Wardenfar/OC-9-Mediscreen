@@ -1,7 +1,6 @@
 package com.wardenfar.mediscreen.patient.controller;
 
 import com.wardenfar.mediscreen.patient.entity.Patient;
-import com.wardenfar.mediscreen.patient.error.NotFoundException;
 import com.wardenfar.mediscreen.patient.model.PatientModel;
 import com.wardenfar.mediscreen.patient.service.PatientService;
 import io.swagger.annotations.ApiOperation;
@@ -44,8 +43,8 @@ public class ApiPatientController {
             @ApiResponse(code = 200, message = "Le patient a été trouvé"),
             @ApiResponse(code = 400, message = "Le patient n'a pas été trouvé")
     })
-    @GetMapping("/fetch")
-    public ResponseEntity<Patient> fetch(@ApiParam("ID du patient") @RequestParam Long id) {
+    @GetMapping("/fetch/{id}")
+    public ResponseEntity<Patient> fetch(@ApiParam("ID du patient") @PathVariable Long id) {
         Optional<Patient> patient = patientService.findById(id);
         if (patient.isPresent()) {
             return ResponseEntity.ok(patient.get());

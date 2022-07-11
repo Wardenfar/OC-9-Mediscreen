@@ -1,4 +1,5 @@
 rootProject.name = 'mediscreen'
 include 'patient'
 include 'historic'
+include 'assess'
 

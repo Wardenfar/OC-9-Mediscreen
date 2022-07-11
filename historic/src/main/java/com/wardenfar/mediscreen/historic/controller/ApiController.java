@@ -35,7 +35,7 @@ public class ApiController {
         }
     }
 
-    @ApiOperation("Récupère l'historique d'un patient avec  l'ID de l'historique")
+    @ApiOperation("Récupère l'historique d'un patient avec l'ID de l'historique")
     @ApiResponses({
             @ApiResponse(code = 200, message = "L'historique a été trouvé"),
             @ApiResponse(code = 404, message = "L'historique n'a pas été trouvé")
@@ -43,6 +43,21 @@ public class ApiController {
     @GetMapping("/fetch/{id}")
     public ResponseEntity<Historic> fetch(@ApiParam(name = "ID de l'historique") @PathVariable String id) {
         Optional<Historic> historic = historicService.findById(id);
+        if (historic.isPresent()) {
+            return ResponseEntity.ok(historic.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @ApiOperation("Récupère l'historique d'un patient avec l'ID du patient")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "L'historique a été trouvé"),
+            @ApiResponse(code = 404, message = "L'historique n'a pas été trouvé")
+    })
+    @GetMapping("/fetch/patient/{id}")
+    public ResponseEntity<Historic> fetchByPatient(@ApiParam(name = "ID du patient") @PathVariable Integer id) {
+        Optional<Historic> historic = historicService.findByPatientId(id);
         if (historic.isPresent()) {
             return ResponseEntity.ok(historic.get());
         } else {
