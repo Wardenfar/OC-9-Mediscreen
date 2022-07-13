@@ -59,11 +59,7 @@ class ApiControllerTest {
 
     @Test
     void fetch() throws Exception {
-        Historic historic = new Historic();
-        historic.setPatientId(10);
-        historic.setNotes("contenu");
-
-        String id = historicService.addHistoric(historic);
+        String id = historicService.addNotes(10, "contenu");
 
         mvc.perform(get("/patHistory/fetch/" + id)).andExpect(status().is(200)).andExpect(jsonPath("$.patientId",
                 is(10)));

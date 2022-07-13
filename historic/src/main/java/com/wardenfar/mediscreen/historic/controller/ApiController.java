@@ -1,7 +1,7 @@
 package com.wardenfar.mediscreen.historic.controller;
 
 import com.wardenfar.mediscreen.historic.document.Historic;
-import com.wardenfar.mediscreen.historic.model.AddHistoricModel;
+import com.wardenfar.mediscreen.historic.model.AddNotesModel;
 import com.wardenfar.mediscreen.historic.service.HistoricService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,9 @@ public class ApiController {
             @ApiResponse(code = 400, message = "L'ajout n'a pas abouti")
     })
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<String> add(@ApiParam(name = "Historique du patient") AddHistoricModel model) {
+    public ResponseEntity<String> addNotes(@ApiParam(name = "Historique du patient") AddNotesModel model) {
         try {
-            Historic historic = model.convertToDocument();
-            String id = historicService.addHistoric(historic);
+            String id = historicService.addNotes(model.getPatId(), model.getE());
             return ResponseEntity.ok(id);
         } catch (Exception e) {
             System.err.println(e.getMessage());

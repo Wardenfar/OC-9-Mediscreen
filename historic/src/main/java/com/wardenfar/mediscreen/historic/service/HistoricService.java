@@ -14,9 +14,20 @@ public class HistoricService {
     @Autowired
     HistoricRepository historicRepo;
 
-    public String addHistoric(Historic historic) {
-        Historic inserted = this.historicRepo.insert(historic);
-        return inserted.getId();
+    public String addNotes(Integer patientId, String notes) {
+        Optional<Historic> existingHistoric = this.historicRepo.findByPatientId(patientId);
+        if (existingHistoric.isPresent()) {
+            Historic historic = existingHistoric.get();
+            historic.setNotes(historic.getNotes() + "\n" + notes);
+            String updatedId = this.historicRepo.save(historic).getId();
+            return updatedId;
+        } else {
+            Historic historic = new Historic();
+            historic.setPatientId(patientId);
+            historic.setNotes(notes);
+            String insertedId = this.historicRepo.save(historic).getId();
+            return insertedId;
+        }
     }
 
     public void update(Historic historic) {

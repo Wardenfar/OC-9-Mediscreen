@@ -20,6 +20,7 @@ public class AssessController {
             AssessResult result = assessService.assessPatient(patientId);
             return ResponseEntity.ok(result.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
