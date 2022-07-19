@@ -38,6 +38,21 @@ public class ApiPatientController {
         }
     }
 
+    @ApiOperation("Récupère les données d'un patient par son nom de famille")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Le patient a été trouvé"),
+            @ApiResponse(code = 400, message = "Le patient n'a pas été trouvé")
+    })
+    @GetMapping("/fetchByFamily/{familyName}")
+    public ResponseEntity<Patient> fetch(@ApiParam("Nom du patient") @PathVariable String familyName) {
+        Optional<Patient> patient = patientService.findByFamilyName(familyName);
+        if (patient.isPresent()) {
+            return ResponseEntity.ok(patient.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @ApiOperation("Récupère les données d'un patient avec son ID")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Le patient a été trouvé"),

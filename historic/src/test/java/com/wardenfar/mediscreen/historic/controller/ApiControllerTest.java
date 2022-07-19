@@ -1,6 +1,5 @@
 package com.wardenfar.mediscreen.historic.controller;
 
-import com.wardenfar.mediscreen.historic.document.Historic;
 import com.wardenfar.mediscreen.historic.repository.HistoricRepository;
 import com.wardenfar.mediscreen.historic.service.HistoricService;
 import org.junit.jupiter.api.AfterEach;

@@ -1,4 +1,4 @@
-package com.wardenfar.mediscreen.access;
+package com.wardenfar.mediscreen.assess;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

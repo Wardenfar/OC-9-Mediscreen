@@ -1,4 +1,4 @@
-package com.wardenfar.mediscreen.access;
+package com.wardenfar.mediscreen.assess;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

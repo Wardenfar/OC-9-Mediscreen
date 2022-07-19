@@ -1,4 +1,4 @@
-package com.wardenfar.mediscreen.access.model;
+package com.wardenfar.mediscreen.assess.model;
 
 import lombok.Data;
 

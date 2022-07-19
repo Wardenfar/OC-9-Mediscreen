@@ -39,6 +39,10 @@ public class PatientService {
         return this.patientRepo.findById(id);
     }
 
+    public Optional<Patient> findByFamilyName(String familyName) {
+        return this.patientRepo.findByFamily(familyName);
+    }
+
     public void deleteAll() {
         this.patientRepo.deleteAll();
     }

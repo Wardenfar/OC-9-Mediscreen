@@ -1,11 +1,11 @@
-package com.wardenfar.mediscreen.access.service;
+package com.wardenfar.mediscreen.assess.service;
 
-import com.wardenfar.mediscreen.access.client.HistoricClient;
-import com.wardenfar.mediscreen.access.client.PatientClient;
-import com.wardenfar.mediscreen.access.model.AssessLevel;
-import com.wardenfar.mediscreen.access.model.AssessResult;
-import com.wardenfar.mediscreen.access.model.Historic;
-import com.wardenfar.mediscreen.access.model.Patient;
+import com.wardenfar.mediscreen.assess.client.HistoricClient;
+import com.wardenfar.mediscreen.assess.client.PatientClient;
+import com.wardenfar.mediscreen.assess.model.AssessLevel;
+import com.wardenfar.mediscreen.assess.model.AssessResult;
+import com.wardenfar.mediscreen.assess.model.Historic;
+import com.wardenfar.mediscreen.assess.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,7 @@ public class AssessService {
     HistoricClient historicClient;
 
     public static final String[] WARNING_TERMS = {
+            // French
             "Hémoglobine A1C",
             "Microalbumine",
             "Taille",
@@ -29,12 +30,31 @@ public class AssessService {
             "Fumeur",
             "Anormal",
             "Cholestérol",
-            "Vertige"
+            "Vertige",
+            // English
+            "Hemoglobin A1C",
+            "Microalbumine",
+            "Height",
+            "Weight",
+            "Smoker",
+            "Abnormal",
+            "Cholesterol",
+            "Dizziness",
+            "Reaction"
     };
 
-    public AssessResult assessPatient(Integer patientId) {
+    public AssessResult assessPatientById(Integer patientId) {
         Patient patient = patientClient.getById(patientId);
-        Historic historic = historicClient.getByPatientId(patientId);
+        return assessPatient(patient);
+    }
+
+    public AssessResult assessPatientByFamilyName(String familyName) {
+        Patient patient = patientClient.getByFamilyName(familyName);
+        return assessPatient(patient);
+    }
+
+    public AssessResult assessPatient(Patient patient) {
+        Historic historic = historicClient.getByPatientId(patient.getId());
 
         int termsCount = countTerms(historic.getNotes(), WARNING_TERMS);
         int age = calculateAge(patient.getDob(), LocalDate.now());
