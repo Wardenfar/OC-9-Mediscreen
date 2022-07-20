@@ -69,7 +69,7 @@ public class AssessService {
         return result;
     }
 
-    private static AssessLevel calculateLevel(int termsCount, int age, boolean isMale) {
+    public AssessLevel calculateLevel(int termsCount, int age, boolean isMale) {
         AssessLevel level = AssessLevel.None;
 
         if (termsCount == 0) {
@@ -103,7 +103,7 @@ public class AssessService {
     public int countTerms(String text, String[] terms) {
         int counter = 0;
         for (String term : terms) {
-            if (text.contains(term)) {
+            if (text.toLowerCase().contains(term.toLowerCase())) {
                 counter++;
             }
         }
