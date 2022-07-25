@@ -23,8 +23,19 @@ public class PatientController {
         this.patientService = patientService;
     }
 
+    @GetMapping("/add")
+    public String add() {
+        return "add";
+    }
+
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String add(@Valid PatientModel patientModel) {
+        Long id = patientService.addPatient(patientModel);
+        return "redirect:/view/" + id;
+    }
+
     @GetMapping("/view/{id}")
-    public String add(@PathVariable Long id, Model model) {
+    public String view(@PathVariable Long id, Model model) {
         Optional<Patient> patient = patientService.findById(id);
         if (patient.isEmpty()) {
             throw new NotFoundException("Patient not found");

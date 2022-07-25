@@ -1,0 +1,37 @@
+{{> base_header }}
+
+<h1>Ajouter un Patient</h1>
+
+<form action="/add" method="post">
+    <div class="mb-3">
+        <label for="family" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="family" name="family">
+    </div>
+    <div class="mb-3">
+        <label for="given" class="form-label">Prénom</label>
+        <input type="text" class="form-control" id="given" name="given">
+    </div>
+    <div class="mb-3">
+        <label for="sex" class="form-label">Sex</label>
+        <select class="form-control" id="sex" name="sex">
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="dob" class="form-label">Date de naissance</label>
+        <input type="date" class="form-control" id="dob" name="dob">
+    </div>
+    <div class="mb-3">
+        <label for="address" class="form-label">Adresse</label>
+        <input type="text" class="form-control" id="address" name="address">
+    </div>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Téléphone</label>
+        <input type="text" class="form-control" id="phone" name="phone">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Valider</button>
+</form>
+
+{{> base_footer }}
