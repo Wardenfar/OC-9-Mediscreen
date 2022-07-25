@@ -34,7 +34,7 @@ class HistoricServiceTest {
     @Test
     void insert() {
         assert this.historicService.findAll().size() == 0;
-        String id = this.historicService.addNotes(50, "notes");
+        String id = this.historicService.addOrCreateNotes(50, "notes");
         assert this.historicService.findAll().size() == 1;
 
         Historic findById = this.historicService.findById(id).get();

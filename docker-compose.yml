@@ -2,31 +2,33 @@ version: '3'
 
 services:
   assess:
-    image: gradle:7-jdk17
-    volumes:
-      - "./assess:/app"
-    working_dir: /app
-    entrypoint: gradle --no-daemon bootRun
+    build:
+      context: ./assess/
+      dockerfile: ./Dockerfile
     ports:
       - "8080:8080"
 
   patient:
-    image: gradle:7-jdk17
-    volumes:
-      - "./patient:/app"
-    working_dir: /app
-    entrypoint: gradle --no-daemon bootRun
+    build:
+      context: ./patient/
+      dockerfile: ./Dockerfile
     ports:
       - "8081:8081"
+    environment:
+      # le module patient doit attendre que la base MySQL soit prête
+      WAIT_HOSTS: database:3306
+      WAIT_TIMEOUT: 300
 
   historic:
-    image: gradle:7-jdk17
-    volumes:
-      - "./historic:/app"
-    working_dir: /app
-    entrypoint: gradle --no-daemon bootRun
+    build:
+      context: ./historic/
+      dockerfile: ./Dockerfile
     ports:
       - "8082:8082"
+    environment:
+      # le module historique doit attendre que la base MongoDB soit prête
+      WAIT_HOSTS: mongo:27017
+      WAIT_TIMEOUT: 300
 
   database:
     image: mysql:8

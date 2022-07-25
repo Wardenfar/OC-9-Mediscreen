@@ -14,7 +14,7 @@ public class HistoricService {
     @Autowired
     HistoricRepository historicRepo;
 
-    public String addNotes(Integer patientId, String notes) {
+    public String addOrCreateNotes(Integer patientId, String notes) {
         Optional<Historic> existingHistoric = this.historicRepo.findByPatientId(patientId);
         if (existingHistoric.isPresent()) {
             Historic historic = existingHistoric.get();

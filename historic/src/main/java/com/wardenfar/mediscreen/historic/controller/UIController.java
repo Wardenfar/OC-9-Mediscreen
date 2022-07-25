@@ -1,7 +1,8 @@
 package com.wardenfar.mediscreen.historic.controller;
 
 import com.wardenfar.mediscreen.historic.document.Historic;
-import com.wardenfar.mediscreen.historic.model.HistoricModel;
+import com.wardenfar.mediscreen.historic.model.HistoricAddModel;
+import com.wardenfar.mediscreen.historic.model.HistoricUpdateModel;
 import com.wardenfar.mediscreen.historic.service.HistoricService;
 import com.wardenfar.mediscreen.historic.error.NotFoundException;
 import org.springframework.http.MediaType;
@@ -26,25 +27,44 @@ public class UIController {
         this.historicService = historicService;
     }
 
-    @GetMapping("/view/{id}")
-    public String add(@PathVariable String id, Model model) {
-        Optional<Historic> historic = historicService.findById(id);
+    @GetMapping("/view/{patientId}")
+    public String view(@PathVariable Integer patientId, Model model) {
+        Optional<Historic> historic = historicService.findByPatientId(patientId);
         if (historic.isEmpty()) {
-            throw new NotFoundException("Historic not found");
+            return "redirect:/add";
         } else {
             model.addAttribute("historic", historic.get());
             return "view";
         }
     }
 
-    @PostMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String update(@PathVariable String id, @Valid HistoricModel historicModel) {
-        Optional<Historic> historicOptional = historicService.findById(id);
+    @GetMapping("/add")
+    public String add() {
+        return "add";
+    }
+
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String add(@Valid HistoricAddModel historicModel) {
+        Optional<Historic> historicOptional = historicService.findByPatientId(historicModel.getPatientId());
+        if (historicOptional.isEmpty()) {
+            Historic historic = new Historic();
+            historic.setPatientId(historicModel.getPatientId());
+            historic.setNotes(historicModel.getNotes());
+            historicService.update(historic);
+            return "redirect:/view/" + historicModel.getPatientId();
+        } else {
+            return "redirect:/view/" + historicOptional.get().getPatientId();
+        }
+    }
+
+    @PostMapping(value = "/update/{patientId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String update(@PathVariable Integer patientId, @Valid HistoricUpdateModel historicModel) {
+        Optional<Historic> historicOptional = historicService.findByPatientId(patientId);
         if (historicOptional.isPresent()) {
             Historic historic = historicOptional.get();
             historic.setNotes(historicModel.getNotes());
             historicService.update(historic);
-            return "redirect:/view/" + id;
+            return "redirect:/view/" + patientId;
         } else {
             return "redirect:/list";
         }

@@ -31,6 +31,9 @@ public class AssessService {
             "Anormal",
             "Cholestérol",
             "Vertige",
+            "Rechute",
+            "Réaction",
+            "Anticorps",
             // English
             "Hemoglobin A1C",
             "Microalbumine",
@@ -40,7 +43,8 @@ public class AssessService {
             "Abnormal",
             "Cholesterol",
             "Dizziness",
-            "Reaction"
+            "Reaction",
+            "Antibodies"
     };
 
     public AssessResult assessPatientById(Integer patientId) {

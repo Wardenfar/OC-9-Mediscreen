@@ -15,14 +15,11 @@
     {{#historics}}
         <tr>
             <td>{{ id }}</td>
-            <td>
-                <a href="localhost:8081/view/{{ patientId }}">
-                    {{ patientId }}
-                </a>
-            </td>
+            <td>{{ patientId }}</td>
             <td>{{ notes }}</td>
             <td>
-                <a href="/view/{{ id }}">Voir</a>
+                <a href="/view/{{ patientId }}">Voir</a>
+                <a href="http://localhost:8081/view/{{ patientId }}">Patient</a>
             </td>
         </tr>
     {{/historics}}

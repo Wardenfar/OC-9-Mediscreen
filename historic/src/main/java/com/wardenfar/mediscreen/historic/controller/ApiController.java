@@ -26,7 +26,7 @@ public class ApiController {
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<String> addNotes(@ApiParam(name = "Historique du patient") AddNotesModel model) {
         try {
-            String id = historicService.addNotes(model.getPatId(), model.getE());
+            String id = historicService.addOrCreateNotes(model.getPatId(), model.getE());
             return ResponseEntity.ok(id);
         } catch (Exception e) {
             System.err.println(e.getMessage());

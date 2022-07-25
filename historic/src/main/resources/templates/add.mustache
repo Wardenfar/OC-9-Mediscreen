@@ -1,0 +1,15 @@
+{{> base_header }}
+
+<h1>Ajouter un historique</h1>
+
+<form action="/add" method="post">
+    <div class="mb-3">
+        <label for="patientId" class="form-label">ID du patient</label>
+        <input type="number" class="form-control" id="patientId" name="patientId" />
+        <label for="notes" class="form-label">Historique</label>
+        <textarea class="form-control" id="notes" name="notes" placeholder="Notes du patient"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+</form>
+
+{{> base_footer }}
